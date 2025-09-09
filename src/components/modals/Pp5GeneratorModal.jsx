@@ -10,6 +10,9 @@ const Pp5GeneratorModal = ({ subjects, onClose }) => {
     const [status, setStatus] = React.useState('idle'); // idle, fetching, generating, success, error
     const [message, setMessage] = React.useState('');
     const [fileUrl, setFileUrl] = React.useState('');
+    const [schoolName, setSchoolName] = React.useState('โรงเรียนบ้านวังหิน');
+    const [teacherName, setTeacherName] = React.useState('');
+    const [directorName, setDirectorName] = React.useState('');
 
     const handleGeneratePp5 = async (grade) => {
         setStatus('fetching');
@@ -66,9 +69,12 @@ const Pp5GeneratorModal = ({ subjects, onClose }) => {
             
             // 4. Prepare payload for Apps Script
             const payload = {
+                action: "generatePP5", // Required by the Apps Script
                 grade: grade.replace('p', ''),
                 year: currentYear,
-                teacherName: "คุณครู (จากระบบ KruKit)", // Placeholder
+                schoolName: schoolName,
+                teacherName: teacherName,
+                directorName: directorName,
                 students: studentList,
                 subjects: allSubjectsData,
                 assessments: assessments,
@@ -109,7 +115,47 @@ const Pp5GeneratorModal = ({ subjects, onClose }) => {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={status === 'idle' || status === 'success' ? onClose : undefined}>
             <div className="bg-gray-800/80 backdrop-blur-xl border border-blue-500/50 rounded-2xl w-full max-w-3xl shadow-2xl p-8 text-center" onClick={(e) => e.stopPropagation()}>
                 <h2 className="text-3xl font-bold text-white mb-2">สร้างเอกสาร ปพ.5 อัตโนมัติ</h2>
-                <p className="text-lg text-gray-300 mb-8">เลือกชั้นเรียนที่ต้องการส่งออกข้อมูลทั้งหมด</p>
+                <p className="text-lg text-gray-300 mb-6">กรอกข้อมูลที่จำเป็นก่อนสร้างเอกสาร</p>
+
+                <div className="space-y-4 mb-8 text-left max-w-xl mx-auto">
+                    <div>
+                        <label htmlFor="schoolName" className="block text-sm font-medium text-gray-300 mb-1">ชื่อสถานศึกษา</label>
+                        <input
+                            type="text"
+                            id="schoolName"
+                            value={schoolName}
+                            onChange={(e) => setSchoolName(e.target.value)}
+                            className="w-full bg-gray-900/50 border border-white/20 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+                            placeholder="เช่น โรงเรียนบ้านวังหิน"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="teacherName" className="block text-sm font-medium text-gray-300 mb-1">ชื่อครูประจำชั้น</label>
+                        <input
+                            type="text"
+                            id="teacherName"
+                            value={teacherName}
+                            onChange={(e) => setTeacherName(e.target.value)}
+                            className="w-full bg-gray-900/50 border border-white/20 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+                            placeholder="เช่น นายใจดี มีเมตตา"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="directorName" className="block text-sm font-medium text-gray-300 mb-1">ชื่อผู้อำนวยการสถานศึกษา</label>
+                        <input
+                            type="text"
+                            id="directorName"
+                            value={directorName}
+                            onChange={(e) => setDirectorName(e.target.value)}
+                            className="w-full bg-gray-900/50 border border-white/20 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+                            placeholder="เช่น นางสาวสมศรี รักการเรียน"
+                        />
+                    </div>
+                </div>
+
+                <div className="w-full border-t border-white/10 my-8"></div>
+
+                <p className="text-lg text-gray-300 mb-8">จากนั้น เลือกชั้นเรียนที่ต้องการส่งออกข้อมูล</p>
                 
                 {status === 'idle' || status === 'success' || status === 'error' ? (
                     <>
