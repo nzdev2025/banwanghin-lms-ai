@@ -1,77 +1,31 @@
-/* src/index.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  td {
-    @apply text-gray-200;
-  }
-  
-  .a4-paper {
-    width: 210mm;
-    min-height: 297mm;
-  }
+/*
+  Ensure that the html and body elements have default background and text colors
+  that can be overridden by the 'dark' class.
+  Tailwind's 'dark:' variant works by looking for a 'dark' class on the html element.
+  The styles in App.tsx will then apply based on this.
+*/
+html {
+  @apply bg-white text-gray-900;
+}
 
-  @page {
-    /* --- FIX: Changed default to Portrait for worksheets --- */
-    size: A4 portrait; 
-    margin: 2cm;
-  }
+html.dark {
+  @apply bg-gray-900 text-gray-100;
+}
 
-  @media print {
-    body {
-      font-family: 'Sarabun', sans-serif;
-      color: black;
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-    }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-    /* --- FIX: More aggressive scrollbar hiding --- */
-    ::-webkit-scrollbar {
-      display: none !important;
-      width: 0 !important;
-      height: 0 !important;
-    }
-    * {
-      scrollbar-width: none !important; /* For Firefox */
-    }
-
-    .print\:hidden {
-      display: none !important;
-    }
-    
-    .print\:block {
-      display: block !important;
-    }
-    
-    .print-table th, .print-table td {
-      border: 1px solid black;
-      padding: 4px;
-      font-size: 10pt;
-      color: black !important;
-    }
-    
-    .print-table th {
-      background-color: #e2e8f0 !important;
-    }
-
-    .school-header {
-      text-align: center !important;
-    }
-    
-    .printable-content-area {
-      background: transparent !important;
-      padding: 0 !important;
-      overflow: visible !important;
-      height: auto !important;
-    }
-    .a4-paper {
-      box-shadow: none !important;
-      margin: 0 !important;
-      width: 100% !important;
-      min-height: auto !important;
-      padding: 0 !important;
-    }
-  }
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
